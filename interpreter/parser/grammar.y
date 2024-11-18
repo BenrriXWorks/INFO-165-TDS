@@ -28,28 +28,36 @@ let stateInstance = new InactiveState()
 
 PROG
     : ANFANG MULTI_INST ENDE {
-        fullProgramEvent() 
-        return stateInstance.checkAction(Actions.BEGIN) 
+        if (stateInstance.constructor === ActiveState)
+            console.log("Warning: Se ejecutarán acciones sobre un programa ya iniciado")
+        return stateInstance.checkAction(Actions.BEGIN).message // Devuelve mensaje (vacío o de advertencia)
     }
     | ANFANG EOF { 
-        var isValid = stateInstance.checkAction(Actions.BEGIN)
-        if (isValid.constructor !== Error) stateInstance = new ActiveState()
-        beginEvent()
-        return isValid
+        var isValid = stateInstance.checkAction(Actions.BEGIN);
+        if (!isValid.error) { 
+            stateInstance = new ActiveState()
+            beginEvent()
+        }
+        return isValid.message // Retorna el mensaje vacío o de error
     }
     | ANFANG MULTI_INST EOF { 
-        var isValid = stateInstance.checkAction(Actions.BEGIN).constructor
-        if (isValid.constructor !== Error) stateInstance = new ActiveState()
-        beginEvent()
-        return isValid
+        var isValid = stateInstance.checkAction(Actions.BEGIN)
+        if (!isValid.error) {
+            stateInstance = new ActiveState()
+            beginEvent()
+        } 
+        return isValid.message
     }
     | MULTI_INST EOF { 
-        return stateInstance.checkAction(Actions.INST)
+        var isValid = stateInstance.checkAction(Actions.INST)
+        return isValid.message
     }
     | ENDE EOF { 
         var isValid = stateInstance.checkAction(Actions.END)
-        if (isValid.constructor !== Error) stateInstance = new InactiveState()
-        return isValid
+        if (!isValid.error) {
+            stateInstance = new InactiveState()
+        }
+        return isValid.message
     }
     | SYMBOLE EOF { return stateInstance.TS }
     ;

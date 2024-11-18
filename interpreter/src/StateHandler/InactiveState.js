@@ -4,9 +4,9 @@ const { Actions } = require('./ActionEnum.js')
 class InactiveState extends GlobalState {
     
     static validActions = new Map([
-        [Actions.BEGIN, () => ""],
-        [Actions.INST, () => new Error("El programa no ha iniciado")],
-        [Actions.END, () => new Error("El programa no se ha iniciado")]
+        [Actions.BEGIN, () => ({ error: false, message: "" })],
+        [Actions.INST, () => ({ error: true, message: "El programa no ha iniciado" })],
+        [Actions.END, () => ({ error: true, message: "El programa no se ha iniciado" })]
     ])
     
     checkAction = action => InactiveState.validActions.get(action)()

@@ -85,36 +85,44 @@ var $0 = $$.length - 1;
 switch (yystate) {
 case 1:
 
-        fullProgramEvent() 
-        return stateInstance.checkAction(Actions.BEGIN) 
+        if (stateInstance.constructor === ActiveState)
+            console.log("Warning: Se ejecutarán acciones sobre un programa ya iniciado");
+        return stateInstance.checkAction(Actions.BEGIN).message; // Devuelve mensaje (vacío o de advertencia)
     
 break;
 case 2:
  
-        var isValid = stateInstance.checkAction(Actions.BEGIN)
-        if (isValid.constructor !== Error) stateInstance = new ActiveState()
-        beginEvent()
-        return isValid
+        var isValid = stateInstance.checkAction(Actions.BEGIN);
+        if (!isValid.error) { 
+            stateInstance = new ActiveState();
+            beginEvent();
+        }
+        return isValid.message; // Retorna el mensaje vacío o de error
     
 break;
 case 3:
  
-        var isValid = stateInstance.checkAction(Actions.BEGIN).constructor
-        if (isValid.constructor !== Error) stateInstance = new ActiveState()
-        beginEvent()
-        return isValid
+        var isValid = stateInstance.checkAction(Actions.BEGIN);
+        if (!isValid.error) {
+            stateInstance = new ActiveState();
+            beginEvent();
+        } 
+        return isValid.message;
     
 break;
 case 4:
  
-        return stateInstance.checkAction(Actions.INST)
+        var isValid = stateInstance.checkAction(Actions.INST);
+        return isValid.message;
     
 break;
 case 5:
  
-        var isValid = stateInstance.checkAction(Actions.END)
-        if (isValid.constructor !== Error) stateInstance = new InactiveState()
-        return isValid
+        var isValid = stateInstance.checkAction(Actions.END);
+        if (!isValid.error) {
+            stateInstance = new InactiveState();
+        }
+        return isValid.message;
     
 break;
 case 6:

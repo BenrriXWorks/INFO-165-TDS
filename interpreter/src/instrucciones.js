@@ -67,9 +67,6 @@ function beginEvent() {
 
 }
 
-function fullProgramEvent() {
-
-}
 
 module.exports = {
     validarPosicion,
@@ -79,6 +76,5 @@ module.exports = {
     moverLin,
     moverUbe,
     moverUnt,
-    beginEvent,
-    fullProgramEvent
+    beginEvent
 }
