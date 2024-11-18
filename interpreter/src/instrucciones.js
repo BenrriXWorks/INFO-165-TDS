@@ -1,34 +1,45 @@
 // instrucciones.js
+const WebSocket = require('ws')
+
+const ws = new WebSocket('ws://localhost:8081')
+
+ws.on('error', console.error)
+
+ws.on('open', function open() {
+    console.log('Client up')
+})
+
+
 
 function validarPosicion(tipo, valor) {
     if (tipo !== 'i') {
-        return `POS debe recibir números como argumento, pero recibió: ${valor}`;
+        return `POS debe recibir números como argumento, pero recibió: ${valor}`
     }
-    return null; // Si no hay error, devolver null
+    return null // Si no hay error, devolver null
 }
 
 function cambiarColor(valor) {
-    console.log(`Cambio de color: ${valor}`);
+    console.log(`Cambio de color: ${valor}`)
 }
 
 function cambiarPosicion(valor1, valor2) {
-    console.log(`Cambio de posición: (${valor1}, ${valor2})`);
+    console.log(`Cambio de posición: (${valor1}, ${valor2})`)
 }
 
 function moverRec(valor) {
-    console.log(`Movimiento rec: ${valor}`);
+    console.log(`Movimiento rec: ${valor}`)
 }
 
 function moverLin(valor) {
-    console.log(`Movimiento lin: ${valor}`);
+    console.log(`Movimiento lin: ${valor}`)
 }
 
 function moverUbe(valor) {
-    console.log(`Movimiento ube: ${valor}`);
+    console.log(`Movimiento ube: ${valor}`)
 }
 
 function moverUnt(valor) {
-    console.log(`Movimiento unt: ${valor}`);
+    console.log(`Movimiento unt: ${valor}`)
 }
 
 module.exports = {
@@ -39,4 +50,4 @@ module.exports = {
     moverLin,
     moverUbe,
     moverUnt
-};
+}

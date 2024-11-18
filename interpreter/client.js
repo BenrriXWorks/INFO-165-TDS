@@ -15,7 +15,7 @@ const handleError = err => {
 // MAIN
 (() => {
 
-    if (config.COMPILE_JISON && compile_jison(config.grammarPath, config.lexerPath) !== "Ok") 
+    if (config.COMPILE_JISON && compile_jison(config.grammarPath, config.lexerPath) !== "Ok")
         return "Error al compilar jison"
     const parser = require('./parser/compiled_grammar.js')
 
@@ -23,23 +23,23 @@ const handleError = err => {
     if (!config.INTERPRETER_MODE) {
         const [fileReadError, fileContent] = getSafe(fs.readFileSync, config.INPUT_FILE, config.FILE_ENCODING)
 
-        if (!handleError(fileReadError)) 
+        if (!handleError(fileReadError))
             return console.error("Error leyendo el archivo")
-        
+
         const [parsingError, parseReturn] = getSafe(parser.parse, fileContent)
-        if (handleError(parsingError || parseReturn) && parseReturn) 
+        if (handleError(parsingError || parseReturn) && parseReturn)
             console.log(parseReturn)
         return console.log("Fin de la traducción")
     }
-    
+
     // Interpreter Mode
     console.log("Iniciando modo interprete... Escriba . para finalizar y TS para ver la tabla de simbolos")
     let input = ''
-    for(;;) {
+    for (; ;) {
         if ((input = readlineSync.question('>> ')) === '.') break
         if (!input) continue
         const [err, val] = getSafe(parser.parse, input)
         if (handleError(err || val) && val) console.log(val)
     }
-    
+
 })()
