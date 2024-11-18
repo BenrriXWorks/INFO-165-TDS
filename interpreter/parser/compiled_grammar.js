@@ -72,141 +72,158 @@
   }
 */
 var compiled_grammar = (function(){
-var o=function(k,v,o,l){for(o=o||{},l=k.length;l--;o[k[l]]=v);return o},$V0=[1,9],$V1=[1,13],$V2=[1,14],$V3=[1,19],$V4=[1,20],$V5=[1,21],$V6=[1,22],$V7=[6,7],$V8=[6,7,12,23,26,28,29,30,31],$V9=[1,40],$Va=[1,41],$Vb=[1,43],$Vc=[1,44],$Vd=[1,45],$Ve=[1,46],$Vf=[1,47],$Vg=[6,7,12,23,25,26,27,28,29,30,31];
+var o=function(k,v,o,l){for(o=o||{},l=k.length;l--;o[k[l]]=v);return o},$V0=[1,9],$V1=[1,13],$V2=[1,14],$V3=[1,19],$V4=[1,20],$V5=[1,21],$V6=[1,22],$V7=[7,8],$V8=[7,8,13,24,27,29,30,31,32],$V9=[1,41],$Va=[1,42],$Vb=[1,44],$Vc=[1,45],$Vd=[1,46],$Ve=[1,47],$Vf=[1,48],$Vg=[7,8,13,24,26,27,28,29,30,31,32];
 var parser = {trace: function trace () { },
 yy: {},
-symbols_: {"error":2,"PROG":3,"ANFANG":4,"MULTI_INST":5,"ENDE":6,"EOF":7,"SYMBOLE":8,"INST":9,"DECL":10,"PROC":11,"WERT":12,"ID":13,"ASSIGN":14,"DATO":15,"PROC_FARBE":16,"PROC_POS":17,"MOV":18,"MOV_REC":19,"MOV_LIN":20,"MOV_UBE":21,"MOV_UNT":22,"FARBE":23,"(":24,")":25,"POS":26,",":27,"REC":28,"LIN":29,"UBE":30,"UNT":31,"INT":32,"COLOR":33,"ROJO":34,"AZUL":35,"AMARILLO":36,"VERDE":37,"BLANCO":38,"$accept":0,"$end":1},
-terminals_: {2:"error",4:"ANFANG",6:"ENDE",7:"EOF",8:"SYMBOLE",12:"WERT",13:"ID",14:"ASSIGN",23:"FARBE",24:"(",25:")",26:"POS",27:",",28:"REC",29:"LIN",30:"UBE",31:"UNT",32:"INT",34:"ROJO",35:"AZUL",36:"AMARILLO",37:"VERDE",38:"BLANCO"},
-productions_: [0,[3,3],[3,2],[3,3],[3,2],[3,2],[3,2],[5,1],[5,2],[9,1],[9,1],[10,4],[11,1],[11,1],[11,1],[18,1],[18,1],[18,1],[18,1],[16,4],[17,6],[19,4],[20,4],[21,4],[22,4],[15,1],[15,1],[15,1],[33,1],[33,1],[33,1],[33,1],[33,1]],
+symbols_: {"error":2,"PROG":3,"ANFANG":4,"ANFANG_FACTOR":5,"MULTI_INST":6,"EOF":7,"ENDE":8,"SYMBOLE":9,"INST":10,"DECL":11,"PROC":12,"WERT":13,"ID":14,"ASSIGN":15,"DATO":16,"PROC_FARBE":17,"PROC_POS":18,"MOV":19,"MOV_REC":20,"MOV_LIN":21,"MOV_UBE":22,"MOV_UNT":23,"FARBE":24,"(":25,")":26,"POS":27,",":28,"REC":29,"LIN":30,"UBE":31,"UNT":32,"INT":33,"COLOR":34,"ROJO":35,"AZUL":36,"AMARILLO":37,"VERDE":38,"BLANCO":39,"$accept":0,"$end":1},
+terminals_: {2:"error",4:"ANFANG",7:"EOF",8:"ENDE",9:"SYMBOLE",13:"WERT",14:"ID",15:"ASSIGN",24:"FARBE",25:"(",26:")",27:"POS",28:",",29:"REC",30:"LIN",31:"UBE",32:"UNT",33:"INT",35:"ROJO",36:"AZUL",37:"AMARILLO",38:"VERDE",39:"BLANCO"},
+productions_: [0,[3,2],[3,2],[3,2],[3,2],[5,3],[5,1],[5,2],[6,1],[6,2],[10,1],[10,1],[11,4],[12,1],[12,1],[12,1],[19,1],[19,1],[19,1],[19,1],[17,4],[18,6],[20,4],[21,4],[22,4],[23,4],[16,1],[16,1],[16,1],[34,1],[34,1],[34,1],[34,1],[34,1]],
 performAction: function anonymous(yytext, yyleng, yylineno, yy, yystate /* action[1] */, $$ /* vstack */, _$ /* lstack */) {
 /* this == yyval */
 
 var $0 = $$.length - 1;
 switch (yystate) {
-case 1:
-
-        if (stateInstance.constructor === ActiveState)
-            console.log("Warning: Se ejecutarán acciones sobre un programa ya iniciado");
-        return stateInstance.checkAction(Actions.BEGIN).message; // Devuelve mensaje (vacío o de advertencia)
-    
-break;
 case 2:
  
-        var isValid = stateInstance.checkAction(Actions.BEGIN);
-        if (!isValid.error) { 
-            stateInstance = new ActiveState();
-            beginEvent();
+        var isValid = stateInstance.checkAction(Actions.INST)
+        if (isValid.error) {
+            console.error(isValid.message)
         }
-        return isValid.message; // Retorna el mensaje vacío o de error
     
 break;
 case 3:
  
-        var isValid = stateInstance.checkAction(Actions.BEGIN);
+        var isValid = stateInstance.checkAction(Actions.END)
         if (!isValid.error) {
-            stateInstance = new ActiveState();
-            beginEvent();
-        } 
-        return isValid.message;
+            stateInstance = new InactiveState()
+        } else {
+            console.error(isValid.message)
+        }
     
 break;
 case 4:
- 
-        var isValid = stateInstance.checkAction(Actions.INST);
-        return isValid.message;
-    
+ return stateInstance.TS 
 break;
 case 5:
- 
-        var isValid = stateInstance.checkAction(Actions.END);
-        if (!isValid.error) {
-            stateInstance = new InactiveState();
-        }
-        return isValid.message;
+
+        handleBeginAction();  // Acción común para manejar el cambio a ActiveState
+        // Resto de la lógica para MULTI_INST ENDE
     
 break;
 case 6:
- return stateInstance.TS 
+
+        handleBeginAction();  // Acción común para manejar el cambio a ActiveState
+        return {action:false, data:[], option:'clear'}
+    
 break;
-case 11:
+case 7:
+ 
+        handleBeginAction();  // Acción común para manejar el cambio a ActiveState
+        beginEvent();  // Evento adicional si es necesario
+    
+break;
+case 12:
 
         if (stateInstance.constructor === ActiveState)
             stateInstance.TS[$$[$0-2]] = $$[$0]; // Asignamos DATO.place al ID
     
 break;
-case 19:
-
-        if ($$[$0-1].type !== 'c') return console.log("POS debe recibir números como argumento")
-        stateInstance.color = cambiarColor($$[$0-1].val)
-    
-break;
 case 20:
 
-        const error1 = validarPosicion($$[$0-3].type, $$[$0-3].val)
-        const error2 = validarPosicion($$[$0-1].type, $$[$0-1].val)
-        if (error1 || error2) return console.log(error1 || error2)
-        stateInstance.cursorPosition = cambiarPosicion($$[$0-3].val, $$[$0-1].val)
+        if (stateInstance.constructor !== ActiveState) {
+            return; // No hacer nada si no es una instancia activa
+        }
+        if ($$[$0-1].type !== 'c') return console.log("POS debe recibir números como argumento");
+        stateInstance.color = cambiarColor($$[$0-1].val);
     
 break;
 case 21:
 
-        if ($$[$0-1].type !== 'i') return console.log("POS debe recibir números como argumento")
-        stateInstance.cursorPosition = moverRec($$[$0-1].val, stateInstance.cursorPosition)
-        console.log(stateInstance.cursorPosition)
+        if (stateInstance.constructor !== ActiveState) {
+            return; // No hacer nada si no es una instancia activa
+        }
+        const error1 = validarPosicion($$[$0-3].type, $$[$0-3].val);
+        const error2 = validarPosicion($$[$0-1].type, $$[$0-1].val);
+        if (error1 || error2) return console.log(error1 || error2);
+        var posicionAntigua = stateInstance.cursorPosition;
+        stateInstance.cursorPosition = cambiarPosicion($$[$0-3].val, $$[$0-1].val);
     
 break;
 case 22:
 
-        if ($$[$0-1].type !== 'i') return console.log("POS debe recibir números como argumento")
-        stateInstance.cursorPosition = moverLin($$[$0-1].val, stateInstance.cursorPosition)
-        console.log(stateInstance.cursorPosition)
+        if (stateInstance.constructor !== ActiveState) {
+            return; // No hacer nada si no es una instancia activa
+        }
+        if ($$[$0-1].type !== 'i') return console.log("POS debe recibir números como argumento");
+        var posicionAntigua = stateInstance.cursorPosition;
+        stateInstance.cursorPosition = moverRec($$[$0-1].val, stateInstance.cursorPosition);
+        return { action: true, data: [stateInstance.color, posicionAntigua, stateInstance.cursorPosition] };
     
 break;
 case 23:
 
-        if ($$[$0-1].type !== 'i') return console.log("POS debe recibir números como argumento")
-        stateInstance.cursorPosition = moverUbe($$[$0-1].val, stateInstance.cursorPosition)
-        console.log(stateInstance.cursorPosition)
+        if (stateInstance.constructor !== ActiveState) {
+            return; // No hacer nada si no es una instancia activa
+        }
+        if ($$[$0-1].type !== 'i') return console.log("POS debe recibir números como argumento");
+        var posicionAntigua = stateInstance.cursorPosition;
+        stateInstance.cursorPosition = moverLin($$[$0-1].val, stateInstance.cursorPosition);
+        return { action: true, data: [stateInstance.color, posicionAntigua, stateInstance.cursorPosition] };
     
 break;
 case 24:
 
-        if ($$[$0-1].type !== 'i') return console.log("POS debe recibir números como argumento")
-        stateInstance.cursorPosition = moverUnt($$[$0-1].val, stateInstance.cursorPosition)
-        console.log(stateInstance.cursorPosition)
+        if (stateInstance.constructor !== ActiveState) {
+            return; // No hacer nada si no es una instancia activa
+        }
+        if ($$[$0-1].type !== 'i') return console.log("POS debe recibir números como argumento");
+        var posicionAntigua = stateInstance.cursorPosition;
+        stateInstance.cursorPosition = moverUbe($$[$0-1].val, stateInstance.cursorPosition);
+        return { action: true, data: [stateInstance.color, posicionAntigua, stateInstance.cursorPosition] };
     
 break;
 case 25:
+
+        if (stateInstance.constructor !== ActiveState) {
+            return; // No hacer nada si no es una instancia activa
+        }
+        if ($$[$0-1].type !== 'i') return console.log("POS debe recibir números como argumento");
+        var posicionAntigua = stateInstance.cursorPosition;
+        stateInstance.cursorPosition = moverUnt($$[$0-1].val, stateInstance.cursorPosition);
+        return { action: true, data: [stateInstance.color, posicionAntigua, stateInstance.cursorPosition] };
+    
+break;
+case 26:
 
         if (stateInstance.constructor === ActiveState)
             this.$ = stateInstance.TS[$$[$0]] ?? (stateInstance.TS[$$[$0]] = new ElementoTS(null, null))
     
 break;
-case 26:
+case 27:
 this.$ = new ElementoTS('i', Number($$[$0]))
 break;
-case 27:
+case 28:
 this.$ = new ElementoTS('c', $$[$0])
 break;
-case 28:
+case 29:
  this.$ = "rojo"; 
 break;
-case 29:
+case 30:
  this.$ = "azul"; 
 break;
-case 30:
+case 31:
  this.$ = "amarillo"; 
 break;
-case 31:
+case 32:
  this.$ = "verde"; 
 break;
-case 32:
+case 33:
  this.$ = "blanco"; 
 break;
 }
 },
-table: [{3:1,4:[1,2],5:3,6:[1,4],8:[1,5],9:6,10:7,11:8,12:$V0,16:10,17:11,18:12,19:15,20:16,21:17,22:18,23:$V1,26:$V2,28:$V3,29:$V4,30:$V5,31:$V6},{1:[3]},{5:23,7:[1,24],9:6,10:7,11:8,12:$V0,16:10,17:11,18:12,19:15,20:16,21:17,22:18,23:$V1,26:$V2,28:$V3,29:$V4,30:$V5,31:$V6},{7:[1,25]},{7:[1,26]},{7:[1,27]},o($V7,[2,7],{9:6,10:7,11:8,16:10,17:11,18:12,19:15,20:16,21:17,22:18,5:28,12:$V0,23:$V1,26:$V2,28:$V3,29:$V4,30:$V5,31:$V6}),o($V8,[2,9]),o($V8,[2,10]),{13:[1,29]},o($V8,[2,12]),o($V8,[2,13]),o($V8,[2,14]),{24:[1,30]},{24:[1,31]},o($V8,[2,15]),o($V8,[2,16]),o($V8,[2,17]),o($V8,[2,18]),{24:[1,32]},{24:[1,33]},{24:[1,34]},{24:[1,35]},{6:[1,36],7:[1,37]},{1:[2,2]},{1:[2,4]},{1:[2,5]},{1:[2,6]},o($V7,[2,8]),{14:[1,38]},{13:$V9,15:39,32:$Va,33:42,34:$Vb,35:$Vc,36:$Vd,37:$Ve,38:$Vf},{13:$V9,15:48,32:$Va,33:42,34:$Vb,35:$Vc,36:$Vd,37:$Ve,38:$Vf},{13:$V9,15:49,32:$Va,33:42,34:$Vb,35:$Vc,36:$Vd,37:$Ve,38:$Vf},{13:$V9,15:50,32:$Va,33:42,34:$Vb,35:$Vc,36:$Vd,37:$Ve,38:$Vf},{13:$V9,15:51,32:$Va,33:42,34:$Vb,35:$Vc,36:$Vd,37:$Ve,38:$Vf},{13:$V9,15:52,32:$Va,33:42,34:$Vb,35:$Vc,36:$Vd,37:$Ve,38:$Vf},{1:[2,1]},{1:[2,3]},{13:$V9,15:53,32:$Va,33:42,34:$Vb,35:$Vc,36:$Vd,37:$Ve,38:$Vf},{25:[1,54]},o($Vg,[2,25]),o($Vg,[2,26]),o($Vg,[2,27]),o($Vg,[2,28]),o($Vg,[2,29]),o($Vg,[2,30]),o($Vg,[2,31]),o($Vg,[2,32]),{27:[1,55]},{25:[1,56]},{25:[1,57]},{25:[1,58]},{25:[1,59]},o($V8,[2,11]),o($V8,[2,19]),{13:$V9,15:60,32:$Va,33:42,34:$Vb,35:$Vc,36:$Vd,37:$Ve,38:$Vf},o($V8,[2,21]),o($V8,[2,22]),o($V8,[2,23]),o($V8,[2,24]),{25:[1,61]},o($V8,[2,20])],
-defaultActions: {24:[2,2],25:[2,4],26:[2,5],27:[2,6],36:[2,1],37:[2,3]},
+table: [{3:1,4:[1,2],6:3,8:[1,4],9:[1,5],10:6,11:7,12:8,13:$V0,17:10,18:11,19:12,20:15,21:16,22:17,23:18,24:$V1,27:$V2,29:$V3,30:$V4,31:$V5,32:$V6},{1:[3]},{5:23,6:24,7:[1,25],10:6,11:7,12:8,13:$V0,17:10,18:11,19:12,20:15,21:16,22:17,23:18,24:$V1,27:$V2,29:$V3,30:$V4,31:$V5,32:$V6},{7:[1,26]},{7:[1,27]},{7:[1,28]},o($V7,[2,8],{10:6,11:7,12:8,17:10,18:11,19:12,20:15,21:16,22:17,23:18,6:29,13:$V0,24:$V1,27:$V2,29:$V3,30:$V4,31:$V5,32:$V6}),o($V8,[2,10]),o($V8,[2,11]),{14:[1,30]},o($V8,[2,13]),o($V8,[2,14]),o($V8,[2,15]),{25:[1,31]},{25:[1,32]},o($V8,[2,16]),o($V8,[2,17]),o($V8,[2,18]),o($V8,[2,19]),{25:[1,33]},{25:[1,34]},{25:[1,35]},{25:[1,36]},{1:[2,1]},{7:[1,38],8:[1,37]},{1:[2,6]},{1:[2,2]},{1:[2,3]},{1:[2,4]},o($V7,[2,9]),{15:[1,39]},{14:$V9,16:40,33:$Va,34:43,35:$Vb,36:$Vc,37:$Vd,38:$Ve,39:$Vf},{14:$V9,16:49,33:$Va,34:43,35:$Vb,36:$Vc,37:$Vd,38:$Ve,39:$Vf},{14:$V9,16:50,33:$Va,34:43,35:$Vb,36:$Vc,37:$Vd,38:$Ve,39:$Vf},{14:$V9,16:51,33:$Va,34:43,35:$Vb,36:$Vc,37:$Vd,38:$Ve,39:$Vf},{14:$V9,16:52,33:$Va,34:43,35:$Vb,36:$Vc,37:$Vd,38:$Ve,39:$Vf},{14:$V9,16:53,33:$Va,34:43,35:$Vb,36:$Vc,37:$Vd,38:$Ve,39:$Vf},{7:[1,54]},{1:[2,7]},{14:$V9,16:55,33:$Va,34:43,35:$Vb,36:$Vc,37:$Vd,38:$Ve,39:$Vf},{26:[1,56]},o($Vg,[2,26]),o($Vg,[2,27]),o($Vg,[2,28]),o($Vg,[2,29]),o($Vg,[2,30]),o($Vg,[2,31]),o($Vg,[2,32]),o($Vg,[2,33]),{28:[1,57]},{26:[1,58]},{26:[1,59]},{26:[1,60]},{26:[1,61]},{1:[2,5]},o($V8,[2,12]),o($V8,[2,20]),{14:$V9,16:62,33:$Va,34:43,35:$Vb,36:$Vc,37:$Vd,38:$Ve,39:$Vf},o($V8,[2,22]),o($V8,[2,23]),o($V8,[2,24]),o($V8,[2,25]),{26:[1,63]},o($V8,[2,21])],
+defaultActions: {23:[2,1],25:[2,6],26:[2,2],27:[2,3],28:[2,4],38:[2,7],54:[2,5]},
 parseError: function parseError (str, hash) {
     if (hash.recoverable) {
         this.trace(str);
@@ -362,9 +379,7 @@ const {
     moverRec, 
     moverLin, 
     moverUbe, 
-    moverUnt,
-    beginEvent,
-    fullProgramEvent
+    moverUnt
 } = require('../src/instrucciones.js')
 const { Actions } = require('../src/StateHandler/ActionEnum.js')
 const { ElementoTS } = require('../src/StateHandler/ElementoTS.js')
@@ -372,6 +387,20 @@ const { ActiveState } = require('../src/StateHandler/ActiveState.js')
 const { InactiveState } = require('../src/StateHandler/InactiveState.js')
 
 let stateInstance = new InactiveState()
+
+function handleBeginAction() {
+    if (stateInstance.constructor === ActiveState) {
+        console.log("Warning: Se ejecutarán acciones sobre un programa ya iniciado")
+    }
+
+    const isValid = stateInstance.checkAction(Actions.BEGIN).message
+    if (isValid.error) {
+        console.error(isValid.message)
+    } else if (stateInstance.constructor !== ActiveState) {
+        // Si el estado no es ActiveState, cambiamos a ActiveState
+        stateInstance = new ActiveState()
+    }
+}
 
 
 
@@ -707,45 +736,45 @@ case 0:/* Ignorar espacios en blanco */
 break;
 case 1:return 4;
 break;
-case 2:return 6;
+case 2:return 8;
 break;
-case 3:return 12;
+case 3:return 13;
 break;
-case 4:return 8;
+case 4:return 9;
 break;
-case 5:return 14;
+case 5:return 15;
 break;
-case 6: yylval = { val: Number(yy_.yytext) }; return 32; 
+case 6: yylval = { val: Number(yy_.yytext) }; return 33; 
 break;
-case 7:return 23;
+case 7:return 24;
 break;
-case 8:return 26;
+case 8:return 27;
 break;
-case 9:return 28;
+case 9:return 29;
 break;
-case 10:return 29;
+case 10:return 30;
 break;
-case 11:return 30;
+case 11:return 31;
 break;
-case 12:return 31;
+case 12:return 32;
 break;
-case 13:return 34;
+case 13:return 35;
 break;
-case 14:return 35;
+case 14:return 36;
 break;
-case 15:return 36;
+case 15:return 37;
 break;
-case 16:return 37;
+case 16:return 38;
 break;
-case 17:return 38;
+case 17:return 39;
 break;
-case 18:return 13; // Identificadores genéricos
+case 18:return 14; // Identificadores genéricos
 break;
-case 19:return 24;
+case 19:return 25;
 break;
-case 20:return 25;
+case 20:return 26;
 break;
-case 21:return 27;
+case 21:return 28;
 break;
 case 22:return 7;
 break;

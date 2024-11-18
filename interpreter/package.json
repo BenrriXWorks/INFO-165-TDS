@@ -1,1 +1,1 @@
-{"dependencies":{"readline-sync":"^1.4.10"}}
+{"dependencies":{"canvas":"^2.11.2","readline-sync":"^1.4.10","socket.io":"^4.8.1"}}

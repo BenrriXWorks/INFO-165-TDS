@@ -1,14 +1,4 @@
-// instrucciones.js
-const WebSocket = require('ws')
-
-const ws = new WebSocket('ws://localhost:8081')
-
-ws.on('error', console.error)
-
-ws.on('open', function open() {
-    console.log('Client up')
-})
-
+//Instrucciones.js
 function validarPosicion(tipo, valor) {
     if (tipo !== 'i') 
         return `POS debe recibir números como argumento, pero recibió: ${valor}`
@@ -63,10 +53,6 @@ function moverUnt(valor, posicionActual) {
     return [posicionActual[0], posicionActual[1] + valor]
 }
 
-function beginEvent() {
-
-}
-
 
 module.exports = {
     validarPosicion,
@@ -75,6 +61,5 @@ module.exports = {
     moverRec,
     moverLin,
     moverUbe,
-    moverUnt,
-    beginEvent
+    moverUnt
 }

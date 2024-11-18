@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gráfico Interactivo</title>
+    <!-- Enlace a Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            text-align: center;
+            max-width: 600px;
+        }
+        h1 {
+            color: #007bff;
+        }
+        .card {
+            background-color: #ffffff;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .canvas-container {
+            position: relative;
+            display: inline-block;
+        }
+        canvas {
+            display: block;
+            margin: 20px auto;
+            border: 1px solid #343a40;
+            border-radius: 8px;
+            background-color: #ffffff;
+        }
+        .scale-labels {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+        }
+        .scale-labels .x-labels,
+        .scale-labels .y-labels {
+            position: absolute;
+        }
+        .x-labels {
+            bottom: -20px;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+        }
+        .y-labels {
+            left: -30px;
+            top: 0;
+            height: 100%;
+        }
+        .label {
+            font-size: 12px;
+            color: #343a40;
+        }
+        .label-0-0 {
+            position: absolute;
+            top: -15px;
+            left: -20px;
+        }
+        .label-100-0 {
+            position: absolute;
+            bottom: -15px;
+            right: -20px;
+        }
+        .label-0-100 {
+            position: absolute;
+            top: -15px;
+            right: -20px;  /* Ajuste de la posición a la esquina superior derecha */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="card">
+            <h1 class="display-4">Gráfico Interactivo</h1>
+            <p class="lead">El gráfico se actualizará dinámicamente con las acciones del servidor.</p>
+            <div class="canvas-container">
+                <canvas id="canvas" width="500" height="500"></canvas>
+                <div class="scale-labels">
+                    <!-- Etiquetas de las posiciones 0, 0 y 100, 0, 0, 100 -->
+                    <div class="label label-0-0">0, 0</div>
+                    <div class="label label-100-0">100, 0</div>
+                    <div class="label label-0-100">0, 100</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts de Bootstrap y Socket.io -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io();  // Conectar al servidor de Socket.IO
+
+        // Obtener el contexto del canvas
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+
+        // Función para dibujar la imagen desde el servidor
+        const updateCanvas = (imgData) => {
+            const image = new Image();
+            image.src = imgData;
+            image.onload = () => {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);  // Limpiar el canvas
+                ctx.drawImage(image, 0, 0);  // Dibujar la nueva imagen
+            };
+        };
+
+        // Escuchar las actualizaciones del servidor
+        socket.on('update', (data) => {
+            if (data.img) {
+                updateCanvas(data.img);  // Actualizar el canvas con la imagen recibida
+            }
+        });
+
+    </script>
+</body>
+</html>
