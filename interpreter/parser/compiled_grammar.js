@@ -84,7 +84,8 @@ performAction: function anonymous(yytext, yyleng, yylineno, yy, yystate /* actio
 var $0 = $$.length - 1;
 switch (yystate) {
 case 1:
- 
+
+        fullProgramEvent() 
         return stateInstance.checkAction(Actions.BEGIN) 
     
 break;
@@ -92,6 +93,7 @@ case 2:
  
         var isValid = stateInstance.checkAction(Actions.BEGIN)
         if (isValid.constructor !== Error) stateInstance = new ActiveState()
+        beginEvent()
         return isValid
     
 break;
@@ -99,6 +101,7 @@ case 3:
  
         var isValid = stateInstance.checkAction(Actions.BEGIN).constructor
         if (isValid.constructor !== Error) stateInstance = new ActiveState()
+        beginEvent()
         return isValid
     
 break;
@@ -125,46 +128,50 @@ case 11:
 break;
 case 19:
 
-        if ($$[$0-1].type !== 'c') return console.log("POS debe recibir números como argumento");
-        cambiarColor($$[$0-1].val);
+        if ($$[$0-1].type !== 'c') return console.log("POS debe recibir números como argumento")
+        stateInstance.color = cambiarColor($$[$0-1].val)
     
 break;
 case 20:
 
-        const error1 = validarPosicion($$[$0-3].type, $$[$0-3].val);
-        const error2 = validarPosicion($$[$0-1].type, $$[$0-1].val);
-        if (error1 || error2) return console.log(error1 || error2);
-        cambiarPosicion($$[$0-3].val, $$[$0-1].val);
+        const error1 = validarPosicion($$[$0-3].type, $$[$0-3].val)
+        const error2 = validarPosicion($$[$0-1].type, $$[$0-1].val)
+        if (error1 || error2) return console.log(error1 || error2)
+        stateInstance.cursorPosition = cambiarPosicion($$[$0-3].val, $$[$0-1].val)
     
 break;
 case 21:
 
-        if ($$[$0-1].type !== 'i') return console.log("POS debe recibir números como argumento");
-        moverRec($$[$0-1].val);
+        if ($$[$0-1].type !== 'i') return console.log("POS debe recibir números como argumento")
+        stateInstance.cursorPosition = moverRec($$[$0-1].val, stateInstance.cursorPosition)
+        console.log(stateInstance.cursorPosition)
     
 break;
 case 22:
 
-        if ($$[$0-1].type !== 'i') return console.log("POS debe recibir números como argumento");
-        moverLin($$[$0-1].val);
+        if ($$[$0-1].type !== 'i') return console.log("POS debe recibir números como argumento")
+        stateInstance.cursorPosition = moverLin($$[$0-1].val, stateInstance.cursorPosition)
+        console.log(stateInstance.cursorPosition)
     
 break;
 case 23:
 
-        if ($$[$0-1].type !== 'i') return console.log("POS debe recibir números como argumento");
-        moverUbe($$[$0-1].val);
+        if ($$[$0-1].type !== 'i') return console.log("POS debe recibir números como argumento")
+        stateInstance.cursorPosition = moverUbe($$[$0-1].val, stateInstance.cursorPosition)
+        console.log(stateInstance.cursorPosition)
     
 break;
 case 24:
 
-        if ($$[$0-1].type !== 'i') return console.log("POS debe recibir números como argumento");
-        moverUnt($$[$0-1].val);
+        if ($$[$0-1].type !== 'i') return console.log("POS debe recibir números como argumento")
+        stateInstance.cursorPosition = moverUnt($$[$0-1].val, stateInstance.cursorPosition)
+        console.log(stateInstance.cursorPosition)
     
 break;
 case 25:
 
         if (stateInstance.constructor === ActiveState)
-            this.$ = stateInstance.TS[$$[$0]] ?? (stateInstance.TS[$$[$0]] = new ElementoTS(null, null));
+            this.$ = stateInstance.TS[$$[$0]] ?? (stateInstance.TS[$$[$0]] = new ElementoTS(null, null))
     
 break;
 case 26:
@@ -347,7 +354,9 @@ const {
     moverRec, 
     moverLin, 
     moverUbe, 
-    moverUnt 
+    moverUnt,
+    beginEvent,
+    fullProgramEvent
 } = require('../src/instrucciones.js')
 const { Actions } = require('../src/StateHandler/ActionEnum.js')
 const { ElementoTS } = require('../src/StateHandler/ElementoTS.js')

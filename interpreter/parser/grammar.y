@@ -7,7 +7,9 @@ const {
     moverRec, 
     moverLin, 
     moverUbe, 
-    moverUnt 
+    moverUnt,
+    beginEvent,
+    fullProgramEvent
 } = require('../src/instrucciones.js')
 const { Actions } = require('../src/StateHandler/ActionEnum.js')
 const { ElementoTS } = require('../src/StateHandler/ElementoTS.js')
@@ -25,17 +27,20 @@ let stateInstance = new InactiveState()
 %%
 
 PROG
-    : ANFANG MULTI_INST ENDE { 
+    : ANFANG MULTI_INST ENDE {
+        fullProgramEvent() 
         return stateInstance.checkAction(Actions.BEGIN) 
     }
     | ANFANG EOF { 
         var isValid = stateInstance.checkAction(Actions.BEGIN)
         if (isValid.constructor !== Error) stateInstance = new ActiveState()
+        beginEvent()
         return isValid
     }
     | ANFANG MULTI_INST EOF { 
         var isValid = stateInstance.checkAction(Actions.BEGIN).constructor
         if (isValid.constructor !== Error) stateInstance = new ActiveState()
+        beginEvent()
         return isValid
     }
     | MULTI_INST EOF { 
@@ -81,52 +86,56 @@ MOV
 
 PROC_FARBE
     : FARBE '(' DATO ')' {
-        if ($3.type !== 'c') return console.log("POS debe recibir números como argumento");
-        cambiarColor($3.val);
+        if ($3.type !== 'c') return console.log("POS debe recibir números como argumento")
+        stateInstance.color = cambiarColor($3.val)
     }
     ;
 
 PROC_POS
     : POS '(' DATO ',' DATO ')' {
-        const error1 = validarPosicion($3.type, $3.val);
-        const error2 = validarPosicion($5.type, $5.val);
-        if (error1 || error2) return console.log(error1 || error2);
-        cambiarPosicion($3.val, $5.val);
+        const error1 = validarPosicion($3.type, $3.val)
+        const error2 = validarPosicion($5.type, $5.val)
+        if (error1 || error2) return console.log(error1 || error2)
+        stateInstance.cursorPosition = cambiarPosicion($3.val, $5.val)
     }
     ;
 
 MOV_REC
     : REC '(' DATO ')' {
-        if ($3.type !== 'i') return console.log("POS debe recibir números como argumento");
-        moverRec($3.val);
+        if ($3.type !== 'i') return console.log("POS debe recibir números como argumento")
+        stateInstance.cursorPosition = moverRec($3.val, stateInstance.cursorPosition)
+        console.log(stateInstance.cursorPosition)
     }
     ;
 
 MOV_LIN
     : LIN '(' DATO ')' {
-        if ($3.type !== 'i') return console.log("POS debe recibir números como argumento");
-        moverLin($3.val);
+        if ($3.type !== 'i') return console.log("POS debe recibir números como argumento")
+        stateInstance.cursorPosition = moverLin($3.val, stateInstance.cursorPosition)
+        console.log(stateInstance.cursorPosition)
     }
     ;
 
 MOV_UBE
     : UBE '(' DATO ')' {
-        if ($3.type !== 'i') return console.log("POS debe recibir números como argumento");
-        moverUbe($3.val);
+        if ($3.type !== 'i') return console.log("POS debe recibir números como argumento")
+        stateInstance.cursorPosition = moverUbe($3.val, stateInstance.cursorPosition)
+        console.log(stateInstance.cursorPosition)
     }
     ;
 
 MOV_UNT
     : UNT '(' DATO ')' {
-        if ($3.type !== 'i') return console.log("POS debe recibir números como argumento");
-        moverUnt($3.val);
+        if ($3.type !== 'i') return console.log("POS debe recibir números como argumento")
+        stateInstance.cursorPosition = moverUnt($3.val, stateInstance.cursorPosition)
+        console.log(stateInstance.cursorPosition)
     }
     ;
 
 DATO
     : ID {
         if (stateInstance.constructor === ActiveState)
-            $$ = stateInstance.TS[$1] ?? (stateInstance.TS[$1] = new ElementoTS(null, null));
+            $$ = stateInstance.TS[$1] ?? (stateInstance.TS[$1] = new ElementoTS(null, null))
     }
     | INT {$$ = new ElementoTS('i', Number($1))}
     | COLOR {$$ = new ElementoTS('c', $1)}

@@ -13,6 +13,8 @@ class InactiveState extends GlobalState {
 
     constructor(){
         super()
+        this.cursorPosition = [0, 0]
+        this.color = 'rojo'
     }
 }
 
