@@ -72,23 +72,38 @@
   }
 */
 var compiled_grammar = (function(){
-var o=function(k,v,o,l){for(o=o||{},l=k.length;l--;o[k[l]]=v);return o},$V0=[1,9],$V1=[1,13],$V2=[1,14],$V3=[1,19],$V4=[1,20],$V5=[1,21],$V6=[1,22],$V7=[7,8],$V8=[7,8,13,24,27,29,30,31,32],$V9=[1,41],$Va=[1,42],$Vb=[1,44],$Vc=[1,45],$Vd=[1,46],$Ve=[1,47],$Vf=[1,48],$Vg=[7,8,13,24,26,27,28,29,30,31,32];
+var o=function(k,v,o,l){for(o=o||{},l=k.length;l--;o[k[l]]=v);return o},$V0=[1,10],$V1=[1,14],$V2=[1,15],$V3=[1,20],$V4=[1,21],$V5=[1,22],$V6=[1,23],$V7=[7,8],$V8=[7,8,14,25,28,30,31,32,33],$V9=[1,42],$Va=[1,43],$Vb=[1,45],$Vc=[1,46],$Vd=[1,47],$Ve=[1,48],$Vf=[1,49],$Vg=[7,8,14,25,27,28,29,30,31,32,33];
 var parser = {trace: function trace () { },
 yy: {},
-symbols_: {"error":2,"PROG":3,"ANFANG":4,"ANFANG_FACTOR":5,"MULTI_INST":6,"EOF":7,"ENDE":8,"SYMBOLE":9,"INST":10,"DECL":11,"PROC":12,"WERT":13,"ID":14,"ASSIGN":15,"DATO":16,"PROC_FARBE":17,"PROC_POS":18,"MOV":19,"MOV_REC":20,"MOV_LIN":21,"MOV_UBE":22,"MOV_UNT":23,"FARBE":24,"(":25,")":26,"POS":27,",":28,"REC":29,"LIN":30,"UBE":31,"UNT":32,"INT":33,"COLOR":34,"ROJO":35,"AZUL":36,"AMARILLO":37,"VERDE":38,"BLANCO":39,"$accept":0,"$end":1},
-terminals_: {2:"error",4:"ANFANG",7:"EOF",8:"ENDE",9:"SYMBOLE",13:"WERT",14:"ID",15:"ASSIGN",24:"FARBE",25:"(",26:")",27:"POS",28:",",29:"REC",30:"LIN",31:"UBE",32:"UNT",33:"INT",35:"ROJO",36:"AZUL",37:"AMARILLO",38:"VERDE",39:"BLANCO"},
-productions_: [0,[3,2],[3,2],[3,2],[3,2],[5,3],[5,1],[5,2],[6,1],[6,2],[10,1],[10,1],[11,4],[12,1],[12,1],[12,1],[19,1],[19,1],[19,1],[19,1],[17,4],[18,6],[20,4],[21,4],[22,4],[23,4],[16,1],[16,1],[16,1],[34,1],[34,1],[34,1],[34,1],[34,1]],
+symbols_: {"error":2,"PROG":3,"ANFANG_PROD":4,"ANFANG_FACTOR":5,"MULTI_INST":6,"EOF":7,"ENDE":8,"SYMBOLE":9,"ANFANG":10,"INST":11,"DECL":12,"PROC":13,"WERT":14,"ID":15,"ASSIGN":16,"DATO":17,"PROC_FARBE":18,"PROC_POS":19,"MOV":20,"MOV_REC":21,"MOV_LIN":22,"MOV_UBE":23,"MOV_UNT":24,"FARBE":25,"(":26,")":27,"POS":28,",":29,"REC":30,"LIN":31,"UBE":32,"UNT":33,"INT":34,"COLOR":35,"ROJO":36,"AZUL":37,"AMARILLO":38,"VERDE":39,"BLANCO":40,"$accept":0,"$end":1},
+terminals_: {2:"error",7:"EOF",8:"ENDE",9:"SYMBOLE",10:"ANFANG",14:"WERT",15:"ID",16:"ASSIGN",25:"FARBE",26:"(",27:")",28:"POS",29:",",30:"REC",31:"LIN",32:"UBE",33:"UNT",34:"INT",36:"ROJO",37:"AZUL",38:"AMARILLO",39:"VERDE",40:"BLANCO"},
+productions_: [0,[3,2],[3,2],[3,2],[3,2],[4,1],[5,3],[5,1],[5,2],[6,2],[6,1],[11,1],[11,1],[12,4],[13,1],[13,1],[13,1],[20,1],[20,1],[20,1],[20,1],[18,4],[19,6],[21,4],[22,4],[23,4],[24,4],[17,1],[17,1],[17,1],[35,1],[35,1],[35,1],[35,1],[35,1]],
 performAction: function anonymous(yytext, yyleng, yylineno, yy, yystate /* action[1] */, $$ /* vstack */, _$ /* lstack */) {
 /* this == yyval */
 
 var $0 = $$.length - 1;
 switch (yystate) {
+case 1:
+ 
+        handleBeginAction() 
+        if (clearSignal) {
+            clearSignal = false
+            actionStack.push({action:false, data:[], option:'clear'})
+        }
+        var stackCopy = actionStack.slice()
+        actionStack = []
+        return stackCopy
+    
+break;
 case 2:
  
         var isValid = stateInstance.checkAction(Actions.INST)
         if (isValid.error) {
             console.error(isValid.message)
-        }
+        } 
+        var stackCopy = actionStack.slice()
+        actionStack = []
+        return stackCopy
     
 break;
 case 3:
@@ -102,84 +117,61 @@ case 3:
     
 break;
 case 4:
- return stateInstance.TS 
+ console.log(stateInstance.TS) 
 break;
 case 5:
-
-        handleBeginAction();  // Acción común para manejar el cambio a ActiveState
-        // Resto de la lógica para MULTI_INST ENDE
-    
-break;
-case 6:
-
-        handleBeginAction();  // Acción común para manejar el cambio a ActiveState
-        return {action:false, data:[], option:'clear'}
-    
-break;
-case 7:
  
-        handleBeginAction();  // Acción común para manejar el cambio a ActiveState
-        beginEvent();  // Evento adicional si es necesario
+        if (stateInstance.constructor === InactiveState) {
+            stateInstance = new ActiveState()
+            clearSignal = true
+        } else {
+            console.error("El programa ya esta iniciado")
+        }
     
 break;
-case 12:
+case 13:
 
         if (stateInstance.constructor === ActiveState)
             stateInstance.TS[$$[$0-2]] = $$[$0]; // Asignamos DATO.place al ID
     
 break;
-case 20:
-
-        if (stateInstance.constructor !== ActiveState) {
-            return; // No hacer nada si no es una instancia activa
-        }
-        if ($$[$0-1].type !== 'c') return console.log("POS debe recibir números como argumento");
-        stateInstance.color = cambiarColor($$[$0-1].val);
-    
-break;
 case 21:
 
-        if (stateInstance.constructor !== ActiveState) {
-            return; // No hacer nada si no es una instancia activa
+        if (stateInstance.constructor === ActiveState) {            
+            if ($$[$0-1].type !== 'c') return console.log("POS debe recibir números como argumento");
+            stateInstance.color = cambiarColor($$[$0-1].val);
         }
-        const error1 = validarPosicion($$[$0-3].type, $$[$0-3].val);
-        const error2 = validarPosicion($$[$0-1].type, $$[$0-1].val);
-        if (error1 || error2) return console.log(error1 || error2);
-        var posicionAntigua = stateInstance.cursorPosition;
-        stateInstance.cursorPosition = cambiarPosicion($$[$0-3].val, $$[$0-1].val);
     
 break;
 case 22:
 
-        if (stateInstance.constructor !== ActiveState) {
-            return; // No hacer nada si no es una instancia activa
+        if (stateInstance.constructor === ActiveState) {
+            const error1 = validarPosicion($$[$0-3].type, $$[$0-3].val);
+            const error2 = validarPosicion($$[$0-1].type, $$[$0-1].val);
+            if (error1 || error2) return console.log(error1 || error2);
+            var posicionAntigua = stateInstance.cursorPosition;
+            stateInstance.cursorPosition = cambiarPosicion($$[$0-3].val, $$[$0-1].val);
         }
-        if ($$[$0-1].type !== 'i') return console.log("POS debe recibir números como argumento");
-        var posicionAntigua = stateInstance.cursorPosition;
-        stateInstance.cursorPosition = moverRec($$[$0-1].val, stateInstance.cursorPosition);
-        return { action: true, data: [stateInstance.color, posicionAntigua, stateInstance.cursorPosition] };
     
 break;
 case 23:
 
-        if (stateInstance.constructor !== ActiveState) {
-            return; // No hacer nada si no es una instancia activa
+        if (stateInstance.constructor === ActiveState) {
+            if ($$[$0-1].type !== 'i') return console.log("POS debe recibir números como argumento");
+            var posicionAntigua = stateInstance.cursorPosition;
+            stateInstance.cursorPosition = moverRec($$[$0-1].val, stateInstance.cursorPosition);
+            actionStack.push({ action: true, data: [stateInstance.color, posicionAntigua, stateInstance.cursorPosition] })
         }
-        if ($$[$0-1].type !== 'i') return console.log("POS debe recibir números como argumento");
-        var posicionAntigua = stateInstance.cursorPosition;
-        stateInstance.cursorPosition = moverLin($$[$0-1].val, stateInstance.cursorPosition);
-        return { action: true, data: [stateInstance.color, posicionAntigua, stateInstance.cursorPosition] };
     
 break;
 case 24:
 
-        if (stateInstance.constructor !== ActiveState) {
-            return; // No hacer nada si no es una instancia activa
+        if (stateInstance.constructor === ActiveState) {
+            if ($$[$0-1].type !== 'i') return console.log("POS debe recibir números como argumento");
+            var posicionAntigua = stateInstance.cursorPosition;
+            stateInstance.cursorPosition = moverLin($$[$0-1].val, stateInstance.cursorPosition);
+            actionStack.push({ action: true, data: [stateInstance.color, posicionAntigua, stateInstance.cursorPosition] })
         }
-        if ($$[$0-1].type !== 'i') return console.log("POS debe recibir números como argumento");
-        var posicionAntigua = stateInstance.cursorPosition;
-        stateInstance.cursorPosition = moverUbe($$[$0-1].val, stateInstance.cursorPosition);
-        return { action: true, data: [stateInstance.color, posicionAntigua, stateInstance.cursorPosition] };
     
 break;
 case 25:
@@ -189,41 +181,54 @@ case 25:
         }
         if ($$[$0-1].type !== 'i') return console.log("POS debe recibir números como argumento");
         var posicionAntigua = stateInstance.cursorPosition;
-        stateInstance.cursorPosition = moverUnt($$[$0-1].val, stateInstance.cursorPosition);
-        return { action: true, data: [stateInstance.color, posicionAntigua, stateInstance.cursorPosition] };
+        stateInstance.cursorPosition = moverUbe($$[$0-1].val, stateInstance.cursorPosition);
+        actionStack.push({ action: true, data: [stateInstance.color, posicionAntigua, stateInstance.cursorPosition] })
     
 break;
 case 26:
+
+        if (stateInstance.constructor !== ActiveState) {
+            return; // No hacer nada si no es una instancia activa
+        }
+        if ($$[$0-1].type !== 'i') console.error("POS debe recibir números como argumento");
+        else {
+            var posicionAntigua = stateInstance.cursorPosition;
+            stateInstance.cursorPosition = moverUnt($$[$0-1].val, stateInstance.cursorPosition);
+            actionStack.push({ action: true, data: [stateInstance.color, posicionAntigua, stateInstance.cursorPosition] })
+        }
+    
+break;
+case 27:
 
         if (stateInstance.constructor === ActiveState)
             this.$ = stateInstance.TS[$$[$0]] ?? (stateInstance.TS[$$[$0]] = new ElementoTS(null, null))
     
 break;
-case 27:
+case 28:
 this.$ = new ElementoTS('i', Number($$[$0]))
 break;
-case 28:
+case 29:
 this.$ = new ElementoTS('c', $$[$0])
 break;
-case 29:
+case 30:
  this.$ = "rojo"; 
 break;
-case 30:
+case 31:
  this.$ = "azul"; 
 break;
-case 31:
+case 32:
  this.$ = "amarillo"; 
 break;
-case 32:
+case 33:
  this.$ = "verde"; 
 break;
-case 33:
+case 34:
  this.$ = "blanco"; 
 break;
 }
 },
-table: [{3:1,4:[1,2],6:3,8:[1,4],9:[1,5],10:6,11:7,12:8,13:$V0,17:10,18:11,19:12,20:15,21:16,22:17,23:18,24:$V1,27:$V2,29:$V3,30:$V4,31:$V5,32:$V6},{1:[3]},{5:23,6:24,7:[1,25],10:6,11:7,12:8,13:$V0,17:10,18:11,19:12,20:15,21:16,22:17,23:18,24:$V1,27:$V2,29:$V3,30:$V4,31:$V5,32:$V6},{7:[1,26]},{7:[1,27]},{7:[1,28]},o($V7,[2,8],{10:6,11:7,12:8,17:10,18:11,19:12,20:15,21:16,22:17,23:18,6:29,13:$V0,24:$V1,27:$V2,29:$V3,30:$V4,31:$V5,32:$V6}),o($V8,[2,10]),o($V8,[2,11]),{14:[1,30]},o($V8,[2,13]),o($V8,[2,14]),o($V8,[2,15]),{25:[1,31]},{25:[1,32]},o($V8,[2,16]),o($V8,[2,17]),o($V8,[2,18]),o($V8,[2,19]),{25:[1,33]},{25:[1,34]},{25:[1,35]},{25:[1,36]},{1:[2,1]},{7:[1,38],8:[1,37]},{1:[2,6]},{1:[2,2]},{1:[2,3]},{1:[2,4]},o($V7,[2,9]),{15:[1,39]},{14:$V9,16:40,33:$Va,34:43,35:$Vb,36:$Vc,37:$Vd,38:$Ve,39:$Vf},{14:$V9,16:49,33:$Va,34:43,35:$Vb,36:$Vc,37:$Vd,38:$Ve,39:$Vf},{14:$V9,16:50,33:$Va,34:43,35:$Vb,36:$Vc,37:$Vd,38:$Ve,39:$Vf},{14:$V9,16:51,33:$Va,34:43,35:$Vb,36:$Vc,37:$Vd,38:$Ve,39:$Vf},{14:$V9,16:52,33:$Va,34:43,35:$Vb,36:$Vc,37:$Vd,38:$Ve,39:$Vf},{14:$V9,16:53,33:$Va,34:43,35:$Vb,36:$Vc,37:$Vd,38:$Ve,39:$Vf},{7:[1,54]},{1:[2,7]},{14:$V9,16:55,33:$Va,34:43,35:$Vb,36:$Vc,37:$Vd,38:$Ve,39:$Vf},{26:[1,56]},o($Vg,[2,26]),o($Vg,[2,27]),o($Vg,[2,28]),o($Vg,[2,29]),o($Vg,[2,30]),o($Vg,[2,31]),o($Vg,[2,32]),o($Vg,[2,33]),{28:[1,57]},{26:[1,58]},{26:[1,59]},{26:[1,60]},{26:[1,61]},{1:[2,5]},o($V8,[2,12]),o($V8,[2,20]),{14:$V9,16:62,33:$Va,34:43,35:$Vb,36:$Vc,37:$Vd,38:$Ve,39:$Vf},o($V8,[2,22]),o($V8,[2,23]),o($V8,[2,24]),o($V8,[2,25]),{26:[1,63]},o($V8,[2,21])],
-defaultActions: {23:[2,1],25:[2,6],26:[2,2],27:[2,3],28:[2,4],38:[2,7],54:[2,5]},
+table: [{3:1,4:2,6:3,8:[1,4],9:[1,5],10:[1,6],11:7,12:8,13:9,14:$V0,18:11,19:12,20:13,21:16,22:17,23:18,24:19,25:$V1,28:$V2,30:$V3,31:$V4,32:$V5,33:$V6},{1:[3]},{5:24,6:25,7:[1,26],11:7,12:8,13:9,14:$V0,18:11,19:12,20:13,21:16,22:17,23:18,24:19,25:$V1,28:$V2,30:$V3,31:$V4,32:$V5,33:$V6},{7:[1,27]},{7:[1,28]},{7:[1,29]},o([7,14,25,28,30,31,32,33],[2,5]),o($V7,[2,10],{11:7,12:8,13:9,18:11,19:12,20:13,21:16,22:17,23:18,24:19,6:30,14:$V0,25:$V1,28:$V2,30:$V3,31:$V4,32:$V5,33:$V6}),o($V8,[2,11]),o($V8,[2,12]),{15:[1,31]},o($V8,[2,14]),o($V8,[2,15]),o($V8,[2,16]),{26:[1,32]},{26:[1,33]},o($V8,[2,17]),o($V8,[2,18]),o($V8,[2,19]),o($V8,[2,20]),{26:[1,34]},{26:[1,35]},{26:[1,36]},{26:[1,37]},{1:[2,1]},{7:[1,39],8:[1,38]},{1:[2,7]},{1:[2,2]},{1:[2,3]},{1:[2,4]},o($V7,[2,9]),{16:[1,40]},{15:$V9,17:41,34:$Va,35:44,36:$Vb,37:$Vc,38:$Vd,39:$Ve,40:$Vf},{15:$V9,17:50,34:$Va,35:44,36:$Vb,37:$Vc,38:$Vd,39:$Ve,40:$Vf},{15:$V9,17:51,34:$Va,35:44,36:$Vb,37:$Vc,38:$Vd,39:$Ve,40:$Vf},{15:$V9,17:52,34:$Va,35:44,36:$Vb,37:$Vc,38:$Vd,39:$Ve,40:$Vf},{15:$V9,17:53,34:$Va,35:44,36:$Vb,37:$Vc,38:$Vd,39:$Ve,40:$Vf},{15:$V9,17:54,34:$Va,35:44,36:$Vb,37:$Vc,38:$Vd,39:$Ve,40:$Vf},{7:[1,55]},{1:[2,8]},{15:$V9,17:56,34:$Va,35:44,36:$Vb,37:$Vc,38:$Vd,39:$Ve,40:$Vf},{27:[1,57]},o($Vg,[2,27]),o($Vg,[2,28]),o($Vg,[2,29]),o($Vg,[2,30]),o($Vg,[2,31]),o($Vg,[2,32]),o($Vg,[2,33]),o($Vg,[2,34]),{29:[1,58]},{27:[1,59]},{27:[1,60]},{27:[1,61]},{27:[1,62]},{1:[2,6]},o($V8,[2,13]),o($V8,[2,21]),{15:$V9,17:63,34:$Va,35:44,36:$Vb,37:$Vc,38:$Vd,39:$Ve,40:$Vf},o($V8,[2,23]),o($V8,[2,24]),o($V8,[2,25]),o($V8,[2,26]),{27:[1,64]},o($V8,[2,22])],
+defaultActions: {24:[2,1],26:[2,7],27:[2,2],28:[2,3],29:[2,4],39:[2,8],55:[2,6]},
 parseError: function parseError (str, hash) {
     if (hash.recoverable) {
         this.trace(str);
@@ -386,21 +391,14 @@ const { ElementoTS } = require('../src/StateHandler/ElementoTS.js')
 const { ActiveState } = require('../src/StateHandler/ActiveState.js')
 const { InactiveState } = require('../src/StateHandler/InactiveState.js')
 
-let stateInstance = new InactiveState()
-
 function handleBeginAction() {
-    if (stateInstance.constructor === ActiveState) {
-        console.log("Warning: Se ejecutarán acciones sobre un programa ya iniciado")
-    }
-
     const isValid = stateInstance.checkAction(Actions.BEGIN).message
-    if (isValid.error) {
-        console.error(isValid.message)
-    } else if (stateInstance.constructor !== ActiveState) {
-        // Si el estado no es ActiveState, cambiamos a ActiveState
-        stateInstance = new ActiveState()
-    }
+    if (isValid.error) console.error(isValid.message)
 }
+
+let stateInstance = new InactiveState()
+let clearSignal = false
+let actionStack = []
 
 
 
@@ -734,47 +732,47 @@ var YYSTATE=YY_START;
 switch($avoiding_name_collisions) {
 case 0:/* Ignorar espacios en blanco */
 break;
-case 1:return 4;
+case 1:return 10;
 break;
 case 2:return 8;
 break;
-case 3:return 13;
+case 3:return 14;
 break;
 case 4:return 9;
 break;
-case 5:return 15;
+case 5:return 16;
 break;
-case 6: yylval = { val: Number(yy_.yytext) }; return 33; 
+case 6: yylval = { val: Number(yy_.yytext) }; return 34; 
 break;
-case 7:return 24;
+case 7:return 25;
 break;
-case 8:return 27;
+case 8:return 28;
 break;
-case 9:return 29;
+case 9:return 30;
 break;
-case 10:return 30;
+case 10:return 31;
 break;
-case 11:return 31;
+case 11:return 32;
 break;
-case 12:return 32;
+case 12:return 33;
 break;
-case 13:return 35;
+case 13:return 36;
 break;
-case 14:return 36;
+case 14:return 37;
 break;
-case 15:return 37;
+case 15:return 38;
 break;
-case 16:return 38;
+case 16:return 39;
 break;
-case 17:return 39;
+case 17:return 40;
 break;
-case 18:return 14; // Identificadores genéricos
+case 18:return 15; // Identificadores genéricos
 break;
-case 19:return 25;
+case 19:return 26;
 break;
-case 20:return 26;
+case 20:return 27;
 break;
-case 21:return 28;
+case 21:return 29;
 break;
 case 22:return 7;
 break;

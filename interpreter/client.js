@@ -1,13 +1,14 @@
 // IMPORTS
 const { compile_jison, getSafe } = require("./src/utilities.js")
+const { createCanvas } = require('canvas')
+const { exec } = require('child_process')
 const readline = require('readline') // Usamos readline en lugar de readlineSync
 const config = require('./config.json')
 const express = require('express')
 const http = require('http')
 const socketIo = require('socket.io')
-const { createCanvas } = require('canvas')
 const process = require('process') 
-const { exec } = require('child_process')
+const chalk = require('chalk')
 
 // Configurar Express y Socket.IO
 const app = express()
@@ -60,30 +61,33 @@ const rl = readline.createInterface({
 
     // Función para procesar la entrada de consola y actualizar el gráfico
     const processInput = () => {
-        rl.question('>> ', (input) => {
-            if (input === '.') {
-                rl.close() // Salir si recibe '.'
+        rl.question(chalk.green('λ >> '), input => {
+            if (input === 'exit()') {
+                rl.close()
                 process.exit(0)
             }
 
             const [err, val] = getSafe(parser.parse, input)
             if (err) console.error(config.VERBOSE_ERROR_MESSAGES ? err : err.message)
-
-            if (val?.option === 'clear') {
-                ctx.clearRect(0, 0, canvas.width, canvas.height)
-                io.emit('update', { img: canvas.toDataURL() })
-            }
-
-            if (val?.action) {
-                // console.log(val)
-
-                // Actualizar el gráfico y enviar a los clientes
-                drawLine(...val.data)
-
-                // Enviar la imagen actualizada a todos los clientes conectados
-                io.emit('update', { img: canvas.toDataURL() })
-            }
-
+                
+            if (config.SHOW_COMUNICATION_STACK) console.log(val)
+            
+            // Si hay instrucciones en el stack al llegar:
+            if (val?.length)
+                val.forEach(instruction => {
+                    // Reiniciar el canvas
+                    if (instruction?.option === 'clear') {
+                        ctx.clearRect(0, 0, canvas.width, canvas.height)
+                        io.emit('update', { img: canvas.toDataURL() })
+                    }
+        
+                    if (instruction?.action) {
+                        drawLine(...instruction.data)
+                        // Actualizar el grafico web
+                        io.emit('update', { img: canvas.toDataURL() })
+                    }
+                })
+            
             // Continuar leyendo la entrada
             processInput()
         })
@@ -91,10 +95,10 @@ const rl = readline.createInterface({
 
     // Iniciar el servidor en el puerto 3000
     server.listen(PORT, () => {
-        console.log(`Servidor escuchando en http://localhost:${PORT}`)
+        console.log(`Servidor escuchando en `, chalk.blue(`http://localhost:${PORT}`))
         exec('start http://localhost:3000')
         // Iniciar el proceso de entrada de consola sin bloquear el servidor
-        console.log("Iniciando interprete, escriba . para salir...")
+        console.log("Iniciando interprete, escriba", chalk.green("exit()"), "para salir...")
         processInput()  // Aquí procesamos la entrada de consola mientras el servidor escucha
     })
 })()

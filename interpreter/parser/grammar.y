@@ -14,21 +14,14 @@ const { ElementoTS } = require('../src/StateHandler/ElementoTS.js')
 const { ActiveState } = require('../src/StateHandler/ActiveState.js')
 const { InactiveState } = require('../src/StateHandler/InactiveState.js')
 
-let stateInstance = new InactiveState()
-
 function handleBeginAction() {
-    if (stateInstance.constructor === ActiveState) {
-        console.log("Warning: Se ejecutarán acciones sobre un programa ya iniciado")
-    }
-
     const isValid = stateInstance.checkAction(Actions.BEGIN).message
-    if (isValid.error) {
-        console.error(isValid.message)
-    } else if (stateInstance.constructor !== ActiveState) {
-        // Si el estado no es ActiveState, cambiamos a ActiveState
-        stateInstance = new ActiveState()
-    }
+    if (isValid.error) console.error(isValid.message)
 }
+
+let stateInstance = new InactiveState()
+let clearSignal = false
+let actionStack = []
 
 %}
 
@@ -39,12 +32,24 @@ function handleBeginAction() {
 %%
 
 PROG
-    : ANFANG ANFANG_FACTOR
+    : ANFANG_PROD ANFANG_FACTOR { 
+        handleBeginAction() 
+        if (clearSignal) {
+            clearSignal = false
+            actionStack.push({action:false, data:[], option:'clear'})
+        }
+        var stackCopy = actionStack.slice()
+        actionStack = []
+        return stackCopy
+    }
     | MULTI_INST EOF { 
         var isValid = stateInstance.checkAction(Actions.INST)
         if (isValid.error) {
             console.error(isValid.message)
-        }
+        } 
+        var stackCopy = actionStack.slice()
+        actionStack = []
+        return stackCopy
     }
     | ENDE EOF { 
         var isValid = stateInstance.checkAction(Actions.END)
@@ -54,27 +59,29 @@ PROG
             console.error(isValid.message)
         }
     }
-    | SYMBOLE EOF { return stateInstance.TS }
+    | SYMBOLE EOF { console.log(stateInstance.TS) }
+    ;
+
+ANFANG_PROD
+    : ANFANG { 
+        if (stateInstance.constructor === InactiveState) {
+            stateInstance = new ActiveState()
+            clearSignal = true
+        } else {
+            console.error("El programa ya esta iniciado")
+        }
+    } 
     ;
 
 ANFANG_FACTOR
-    : MULTI_INST ENDE EOF {
-        handleBeginAction();  // Acción común para manejar el cambio a ActiveState
-        // Resto de la lógica para MULTI_INST ENDE
-    }
-    | EOF {
-        handleBeginAction();  // Acción común para manejar el cambio a ActiveState
-        return {action:false, data:[], option:'clear'}
-    }
-    | MULTI_INST EOF { 
-        handleBeginAction();  // Acción común para manejar el cambio a ActiveState
-        beginEvent();  // Evento adicional si es necesario
-    }
+    : MULTI_INST ENDE EOF 
+    | EOF 
+    | MULTI_INST EOF 
     ;
 
 MULTI_INST
-    : INST
-    | INST MULTI_INST 
+    : INST MULTI_INST 
+    | INST
     ;
 
 INST
@@ -104,48 +111,44 @@ MOV
 
 PROC_FARBE
     : FARBE '(' DATO ')' {
-        if (stateInstance.constructor !== ActiveState) {
-            return; // No hacer nada si no es una instancia activa
+        if (stateInstance.constructor === ActiveState) {            
+            if ($3.type !== 'c') return console.log("POS debe recibir números como argumento");
+            stateInstance.color = cambiarColor($3.val);
         }
-        if ($3.type !== 'c') return console.log("POS debe recibir números como argumento");
-        stateInstance.color = cambiarColor($3.val);
     }
     ;
 
 PROC_POS
     : POS '(' DATO ',' DATO ')' {
-        if (stateInstance.constructor !== ActiveState) {
-            return; // No hacer nada si no es una instancia activa
+        if (stateInstance.constructor === ActiveState) {
+            const error1 = validarPosicion($3.type, $3.val);
+            const error2 = validarPosicion($5.type, $5.val);
+            if (error1 || error2) return console.log(error1 || error2);
+            var posicionAntigua = stateInstance.cursorPosition;
+            stateInstance.cursorPosition = cambiarPosicion($3.val, $5.val);
         }
-        const error1 = validarPosicion($3.type, $3.val);
-        const error2 = validarPosicion($5.type, $5.val);
-        if (error1 || error2) return console.log(error1 || error2);
-        var posicionAntigua = stateInstance.cursorPosition;
-        stateInstance.cursorPosition = cambiarPosicion($3.val, $5.val);
     }
     ;
 
 MOV_REC
     : REC '(' DATO ')' {
-        if (stateInstance.constructor !== ActiveState) {
-            return; // No hacer nada si no es una instancia activa
+        if (stateInstance.constructor === ActiveState) {
+            if ($3.type !== 'i') return console.log("POS debe recibir números como argumento");
+            var posicionAntigua = stateInstance.cursorPosition;
+            stateInstance.cursorPosition = moverRec($3.val, stateInstance.cursorPosition);
+            actionStack.push({ action: true, data: [stateInstance.color, posicionAntigua, stateInstance.cursorPosition] })
         }
-        if ($3.type !== 'i') return console.log("POS debe recibir números como argumento");
-        var posicionAntigua = stateInstance.cursorPosition;
-        stateInstance.cursorPosition = moverRec($3.val, stateInstance.cursorPosition);
-        return { action: true, data: [stateInstance.color, posicionAntigua, stateInstance.cursorPosition] };
     }
     ;
 
 MOV_LIN
     : LIN '(' DATO ')' {
-        if (stateInstance.constructor !== ActiveState) {
-            return; // No hacer nada si no es una instancia activa
+        if (stateInstance.constructor === ActiveState) {
+            if ($3.type !== 'i') return console.log("POS debe recibir números como argumento");
+            var posicionAntigua = stateInstance.cursorPosition;
+            stateInstance.cursorPosition = moverLin($3.val, stateInstance.cursorPosition);
+            actionStack.push({ action: true, data: [stateInstance.color, posicionAntigua, stateInstance.cursorPosition] })
         }
-        if ($3.type !== 'i') return console.log("POS debe recibir números como argumento");
-        var posicionAntigua = stateInstance.cursorPosition;
-        stateInstance.cursorPosition = moverLin($3.val, stateInstance.cursorPosition);
-        return { action: true, data: [stateInstance.color, posicionAntigua, stateInstance.cursorPosition] };
     }
     ;
 
@@ -157,7 +160,7 @@ MOV_UBE
         if ($3.type !== 'i') return console.log("POS debe recibir números como argumento");
         var posicionAntigua = stateInstance.cursorPosition;
         stateInstance.cursorPosition = moverUbe($3.val, stateInstance.cursorPosition);
-        return { action: true, data: [stateInstance.color, posicionAntigua, stateInstance.cursorPosition] };
+        actionStack.push({ action: true, data: [stateInstance.color, posicionAntigua, stateInstance.cursorPosition] })
     }
     ;
 
@@ -166,10 +169,12 @@ MOV_UNT
         if (stateInstance.constructor !== ActiveState) {
             return; // No hacer nada si no es una instancia activa
         }
-        if ($3.type !== 'i') return console.log("POS debe recibir números como argumento");
-        var posicionAntigua = stateInstance.cursorPosition;
-        stateInstance.cursorPosition = moverUnt($3.val, stateInstance.cursorPosition);
-        return { action: true, data: [stateInstance.color, posicionAntigua, stateInstance.cursorPosition] };
+        if ($3.type !== 'i') console.error("POS debe recibir números como argumento");
+        else {
+            var posicionAntigua = stateInstance.cursorPosition;
+            stateInstance.cursorPosition = moverUnt($3.val, stateInstance.cursorPosition);
+            actionStack.push({ action: true, data: [stateInstance.color, posicionAntigua, stateInstance.cursorPosition] })
+        }
     }
     ;
 

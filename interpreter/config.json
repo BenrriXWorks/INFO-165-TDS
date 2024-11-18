@@ -1,5 +1,5 @@
 {
-    "INTERPRETER_MODE": true,
+    "SHOW_COMUNICATION_STACK":false,
     "COMPILE_JISON": true,
     "VERBOSE_ERROR_MESSAGES": false,
     "INPUT_FILE": "./input_examples/input.test",
