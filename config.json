@@ -1,0 +1,9 @@
+{
+    "INTERPRETER_MODE": true,
+    "COMPILE_JISON": true,
+    "VERBOSE_ERROR_MESSAGES": false,
+    "INPUT_FILE": "./input_examples/input.test",
+    "FILE_ENCODING": "utf-8",
+    "grammarPath": "parser/grammar.y",
+    "lexerPath": "parser/lexer.l"
+}
