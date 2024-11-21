@@ -1,0 +1,93 @@
+{
+    "anfang":{
+        "Tipo":"Control",
+        "Descripción corta":"Inicio de un programa",
+        "Descripción larga":"Anfang es la palabra clave que indica el inicio de un programa. De esta no estar presente, no se recibirá ni procesará ninguna instrucción.",
+        "Ejemplos":[
+            {"Titulo":"Inicio", "Entrada":"anfang", "Salida":"", "Comentarios":"El sistema reconoce la palabra clave anfang como inicio de un programa y comienza a aceptar instrucciones"},
+            {"Titulo":"Inicio con instrucción", "Entrada":"anfang wert I9=10", "Salida":"", "Comentarios":"El sistema reconoce la palabra clave anfang como inicio de un programa y ejecuta la instrucción que le sigue, queda preparado para aceptar nuevas instrucciones"},
+            {"Titulo":"Programa completo", "Entrada":"anfang farbe(rojo) ende", "Salida":"", "Comentarios":"El sistema reconoce la palabra clave anfang como inicio de un programa y ejecuta la instrucción que le sigue, al leer ende no se aceptan nuevas instrucciones"}
+        ]
+    },
+    "ende":{
+        "Tipo":"Control",
+        "Descripción corta":"Fin de un programa",
+        "Descripción larga":"Hasta que no se llegue a la palabra clave Ende, el programa seguirá ejecutando instrucciones. Una vez que se llegue a esta palabra clave, el programa no aceptará nuevas instrucciones.",
+        "Ejemplos":[
+            {"Titulo":"Fin", "Entrada":"ende", "Salida":"", "Comentarios":"El sistema reconoce ende como fin de un programa y deja de aceptar instrucciones"},
+            {"Titulo":"Instrucciones y Fin", "Entrada":"lin(10) ende", "Salida":"", "Comentarios":"El programa ejecuta la instrucción o secuencia de instrucciones y al leer ende deja de aceptar instrucciones"}
+        ]
+    },
+    "farbe":{
+        "Parametros":"(color)",
+        "Tipo":"Utilidad",
+        "Descripción corta":"Cambia el color de la pluma",
+        "Descripción larga":"farbe es la función que permite cambiar el color de la pluma, los colores disponibles son: rojo, azul, amarillo, verde y blanco ",
+        "Ejemplos":[
+            {"Titulo":"Cambiar color a rojo", "Entrada":"farbe(rojo)", "Salida":"Cambio de color: Rojo", "Comentarios":""},
+            {"Titulo":"Cambiar color al asociado a una id.", "Entrada":"farbe(I1)", "Salida":"Cambio de color: [El color almacenado en I1]", "Comentarios":"ID debe contener un color válido, de no ser así el programa no cambiará el color de la pluma"}
+        ]
+    },
+    "wert":{
+        "Parametros":" ID=DATO",
+        "Tipo":"Utilidad",
+        "Descripción corta":"Asigna un valor a una variable",
+        "Descripción larga":"wert es la función que permite asignar un valor a una id para reemplazarse en cualquier llamada, la id debe tener una letra mayúscula seguida de un número, dato puede ser un número entero, un color o otro id",
+        "Ejemplos":[
+            {"Titulo":"Asignar un numero a un identificador", "Entrada":"wert I1=26", "Salida":"", "Comentarios":"El programa asociará DATO a ID"},
+            {"Titulo":"Asignar un color a un identificador", "Entrada":"wert I1=rojo", "Salida":"", "Comentarios":"El programa asociará DATO a ID"},
+            {"Titulo":"Asignar el valor de un identificador a otro", "Entrada":"wert I1=I2", "Salida":"", "Comentarios":"El programa asociará el valor de I2 a I1"}
+        ]
+    },
+    "pos":{
+        "Parametros":"(int, int)",
+        "Tipo":"Utilidad",
+        "Descripción corta":"Mueve el puntero a una posición",
+        "Descripción larga":"pos es la función que permite mover el puntero a una posición específica, los valores de entrada son dos números enteros que representan la posición en el eje x y en el eje y respectivamente, el origen de coordenadas es la esquina superior izquierda y los valores maximos están limitados por el canvas.",
+        "Ejemplos":[
+            {"Titulo":"Mover el cursor sin trazar una  linea usando dos enteros", "Entrada":"pos(10,10)", "Salida":"Cambio de posición: (10,10)", "Comentarios":""},
+            {"Titulo":"Mover el cursor sin trazar una linea usando identificadores", "Entrada":"pos(I1,I2)", "Salida":"Cambio de posición: ([valor de I1],[valor de I2])", "Comentarios":""}
+        ]
+    },
+    "rec":{
+        "Parametros":"(int)",
+        "Tipo":"Movimiento",
+        "Descripción corta":"Crea una linea hacia la derecha de largo n",
+        "Descripción larga":"rec es la función que permite crear una línea del color de la pluma hacia la derecha de largo n, n debe ser un número entero positivo o un id que contenga un número entero positivo",
+        "Ejemplos":[
+            {"Titulo":"Moverse a la derecha usando un entero", "Entrada":"rec(10)", "Salida":"Se muestra en el canvas la recta dibujada", "Comentarios":""},
+            {"Titulo":"Moverse a la derecha usando un identificador", "Entrada":"rec(I1)", "Salida":"Se muestra en el canvas la recta dibujada", "Comentarios":"ID debe contener un número entero positivo"}
+        ]
+    },
+    "lin":{
+        "Parametros":"(int)",
+        "Tipo":"Movimiento",
+        "Descripción corta":"Crea una linea hacia la izquierda de largo n",
+        "Descripción larga":"lin es la función que permite crear una línea del color de la pluma hacia la izquierda de largo n, n debe ser un número entero positivo o un id que contenga un número entero positivo",
+        "Ejemplos":[
+            {"Titulo":"Moverse a la izquierda usando un entero", "Entrada":"lin(10)", "Salida":"Se muestra en el canvas la recta dibujada", "Comentarios":""},
+            {"Titulo":"Moverse a la izquierda usando un identificador", "Entrada":"lin(I1)", "Salida":"Se muestra en el canvas la recta dibujada", "Comentarios":"ID debe contener un número entero positivo"}
+        ]
+    },
+    "ube":{
+        "Parametros":"(int)",
+        "Tipo":"Movimiento",
+        "Descripción corta":"Crea una linea hacia arriba de largo n",
+        "Descripción larga":"ube es la función que permite crear una línea del color de la pluma hacia arriba de largo n, n debe ser un número entero positivo o un id que contenga un número entero positivo",
+        "Ejemplos":[
+            {"Titulo":"Moverse hacia arriba usando un entero", "Entrada":"ube(10)", "Salida":"Se muestra en el canvas la recta dibujada", "Comentarios":""},
+            {"Titulo":"Moverse hacia arriba usando un identificador", "Entrada":"ube(I1)", "Salida":"Se muestra en el canvas la recta dibujada", "Comentarios":"ID debe contener un número entero positivo"}
+        ]
+    },
+    "unt":{
+        "Parametros":"(int)",
+        "Tipo":"Movimiento",
+        "Descripción corta":"Crea una linea hacia abajo de largo n",
+        "Descripción larga":"unt es la función que permite crear una línea del color de la pluma hacia abajo de largo n, n debe ser un número entero positivo o un id que contenga un número entero positivo",
+        "Ejemplos":[
+            {"Titulo":"Moverse hacia abajo usando un entero", "Entrada":"unt(10)", "Salida":"Se muestra en el canvas la recta dibujada", "Comentarios":""},
+            {"Titulo":"Moverse hacia abajo usando un identificador", "Entrada":"unt(I1)", "Salida":"Se muestra en el canvas la recta dibujada", "Comentarios":"ID debe contener un número entero positivo"}
+        ]
+    }
+    
+}
