@@ -1,0 +1,735 @@
+Grammar
+
+    0 $accept: PROG $end
+
+    1 PROG: ANFANG_PROD ANFANG_FACTOR
+    2     | MULTI_INST EOF
+    3     | ENDE EOF
+    4     | SYMBOLE EOF
+
+    5 ANFANG_PROD: ANFANG
+
+    6 ANFANG_FACTOR: MULTI_INST ENDE EOF
+    7              | EOF
+    8              | MULTI_INST EOF
+
+    9 MULTI_INST: INST MULTI_INST
+   10           | INST
+
+   11 INST: DECL
+   12     | PROC
+
+   13 DECL: WERT ID ASSIGN DATO
+
+   14 PROC: PROC_FARBE
+   15     | PROC_POS
+   16     | MOV
+
+   17 MOV: MOV_REC
+   18    | MOV_LIN
+   19    | MOV_UBE
+   20    | MOV_UNT
+
+   21 PROC_FARBE: FARBE '(' DATO ')'
+
+   22 PROC_POS: POS '(' DATO ',' DATO ')'
+
+   23 MOV_REC: REC '(' DATO ')'
+
+   24 MOV_LIN: LIN '(' DATO ')'
+
+   25 MOV_UBE: UBE '(' DATO ')'
+
+   26 MOV_UNT: UNT '(' DATO ')'
+
+   27 DATO: ID
+   28     | INT
+   29     | COLOR
+
+   30 COLOR: ROJO
+   31      | AZUL
+   32      | AMARILLO
+   33      | VERDE
+   34      | BLANCO
+
+
+Terminals, with rules where they appear
+
+    $end (0) 0
+    '(' (40) 21 22 23 24 25 26
+    ')' (41) 21 22 23 24 25 26
+    ',' (44) 22
+    error (256)
+    ANFANG (258) 5
+    ENDE (259) 3 6
+    WERT (260) 13
+    SYMBOLE (261) 4
+    ID (262) 13 27
+    ASSIGN (263) 13
+    INT (264) 28
+    FARBE (265) 21
+    POS (266) 22
+    REC (267) 23
+    LIN (268) 24
+    UBE (269) 25
+    UNT (270) 26
+    ROJO (271) 30
+    AZUL (272) 31
+    AMARILLO (273) 32
+    VERDE (274) 33
+    BLANCO (275) 34
+    EOF (276) 2 3 4 6 7 8
+
+
+Nonterminals, with rules where they appear
+
+    $accept (25)
+        on left: 0
+    PROG (26)
+        on left: 1 2 3 4
+        on right: 0
+    ANFANG_PROD (27)
+        on left: 5
+        on right: 1
+    ANFANG_FACTOR (28)
+        on left: 6 7 8
+        on right: 1
+    MULTI_INST (29)
+        on left: 9 10
+        on right: 2 6 8 9
+    INST (30)
+        on left: 11 12
+        on right: 9 10
+    DECL (31)
+        on left: 13
+        on right: 11
+    PROC (32)
+        on left: 14 15 16
+        on right: 12
+    MOV (33)
+        on left: 17 18 19 20
+        on right: 16
+    PROC_FARBE (34)
+        on left: 21
+        on right: 14
+    PROC_POS (35)
+        on left: 22
+        on right: 15
+    MOV_REC (36)
+        on left: 23
+        on right: 17
+    MOV_LIN (37)
+        on left: 24
+        on right: 18
+    MOV_UBE (38)
+        on left: 25
+        on right: 19
+    MOV_UNT (39)
+        on left: 26
+        on right: 20
+    DATO (40)
+        on left: 27 28 29
+        on right: 13 21 22 23 24 25 26
+    COLOR (41)
+        on left: 30 31 32 33 34
+        on right: 29
+
+
+State 0
+
+    0 $accept: • PROG $end
+
+    ANFANG   shift, and go to state 1
+    ENDE     shift, and go to state 2
+    WERT     shift, and go to state 3
+    SYMBOLE  shift, and go to state 4
+    FARBE    shift, and go to state 5
+    POS      shift, and go to state 6
+    REC      shift, and go to state 7
+    LIN      shift, and go to state 8
+    UBE      shift, and go to state 9
+    UNT      shift, and go to state 10
+
+    PROG         go to state 11
+    ANFANG_PROD  go to state 12
+    MULTI_INST   go to state 13
+    INST         go to state 14
+    DECL         go to state 15
+    PROC         go to state 16
+    MOV          go to state 17
+    PROC_FARBE   go to state 18
+    PROC_POS     go to state 19
+    MOV_REC      go to state 20
+    MOV_LIN      go to state 21
+    MOV_UBE      go to state 22
+    MOV_UNT      go to state 23
+
+
+State 1
+
+    5 ANFANG_PROD: ANFANG •
+
+    $default  reduce using rule 5 (ANFANG_PROD)
+
+
+State 2
+
+    3 PROG: ENDE • EOF
+
+    EOF  shift, and go to state 24
+
+
+State 3
+
+   13 DECL: WERT • ID ASSIGN DATO
+
+    ID  shift, and go to state 25
+
+
+State 4
+
+    4 PROG: SYMBOLE • EOF
+
+    EOF  shift, and go to state 26
+
+
+State 5
+
+   21 PROC_FARBE: FARBE • '(' DATO ')'
+
+    '('  shift, and go to state 27
+
+
+State 6
+
+   22 PROC_POS: POS • '(' DATO ',' DATO ')'
+
+    '('  shift, and go to state 28
+
+
+State 7
+
+   23 MOV_REC: REC • '(' DATO ')'
+
+    '('  shift, and go to state 29
+
+
+State 8
+
+   24 MOV_LIN: LIN • '(' DATO ')'
+
+    '('  shift, and go to state 30
+
+
+State 9
+
+   25 MOV_UBE: UBE • '(' DATO ')'
+
+    '('  shift, and go to state 31
+
+
+State 10
+
+   26 MOV_UNT: UNT • '(' DATO ')'
+
+    '('  shift, and go to state 32
+
+
+State 11
+
+    0 $accept: PROG • $end
+
+    $end  shift, and go to state 33
+
+
+State 12
+
+    1 PROG: ANFANG_PROD • ANFANG_FACTOR
+
+    WERT   shift, and go to state 3
+    FARBE  shift, and go to state 5
+    POS    shift, and go to state 6
+    REC    shift, and go to state 7
+    LIN    shift, and go to state 8
+    UBE    shift, and go to state 9
+    UNT    shift, and go to state 10
+    EOF    shift, and go to state 34
+
+    ANFANG_FACTOR  go to state 35
+    MULTI_INST     go to state 36
+    INST           go to state 14
+    DECL           go to state 15
+    PROC           go to state 16
+    MOV            go to state 17
+    PROC_FARBE     go to state 18
+    PROC_POS       go to state 19
+    MOV_REC        go to state 20
+    MOV_LIN        go to state 21
+    MOV_UBE        go to state 22
+    MOV_UNT        go to state 23
+
+
+State 13
+
+    2 PROG: MULTI_INST • EOF
+
+    EOF  shift, and go to state 37
+
+
+State 14
+
+    9 MULTI_INST: INST • MULTI_INST
+   10           | INST •
+
+    WERT   shift, and go to state 3
+    FARBE  shift, and go to state 5
+    POS    shift, and go to state 6
+    REC    shift, and go to state 7
+    LIN    shift, and go to state 8
+    UBE    shift, and go to state 9
+    UNT    shift, and go to state 10
+
+    $default  reduce using rule 10 (MULTI_INST)
+
+    MULTI_INST  go to state 38
+    INST        go to state 14
+    DECL        go to state 15
+    PROC        go to state 16
+    MOV         go to state 17
+    PROC_FARBE  go to state 18
+    PROC_POS    go to state 19
+    MOV_REC     go to state 20
+    MOV_LIN     go to state 21
+    MOV_UBE     go to state 22
+    MOV_UNT     go to state 23
+
+
+State 15
+
+   11 INST: DECL •
+
+    $default  reduce using rule 11 (INST)
+
+
+State 16
+
+   12 INST: PROC •
+
+    $default  reduce using rule 12 (INST)
+
+
+State 17
+
+   16 PROC: MOV •
+
+    $default  reduce using rule 16 (PROC)
+
+
+State 18
+
+   14 PROC: PROC_FARBE •
+
+    $default  reduce using rule 14 (PROC)
+
+
+State 19
+
+   15 PROC: PROC_POS •
+
+    $default  reduce using rule 15 (PROC)
+
+
+State 20
+
+   17 MOV: MOV_REC •
+
+    $default  reduce using rule 17 (MOV)
+
+
+State 21
+
+   18 MOV: MOV_LIN •
+
+    $default  reduce using rule 18 (MOV)
+
+
+State 22
+
+   19 MOV: MOV_UBE •
+
+    $default  reduce using rule 19 (MOV)
+
+
+State 23
+
+   20 MOV: MOV_UNT •
+
+    $default  reduce using rule 20 (MOV)
+
+
+State 24
+
+    3 PROG: ENDE EOF •
+
+    $default  reduce using rule 3 (PROG)
+
+
+State 25
+
+   13 DECL: WERT ID • ASSIGN DATO
+
+    ASSIGN  shift, and go to state 39
+
+
+State 26
+
+    4 PROG: SYMBOLE EOF •
+
+    $default  reduce using rule 4 (PROG)
+
+
+State 27
+
+   21 PROC_FARBE: FARBE '(' • DATO ')'
+
+    ID        shift, and go to state 40
+    INT       shift, and go to state 41
+    ROJO      shift, and go to state 42
+    AZUL      shift, and go to state 43
+    AMARILLO  shift, and go to state 44
+    VERDE     shift, and go to state 45
+    BLANCO    shift, and go to state 46
+
+    DATO   go to state 47
+    COLOR  go to state 48
+
+
+State 28
+
+   22 PROC_POS: POS '(' • DATO ',' DATO ')'
+
+    ID        shift, and go to state 40
+    INT       shift, and go to state 41
+    ROJO      shift, and go to state 42
+    AZUL      shift, and go to state 43
+    AMARILLO  shift, and go to state 44
+    VERDE     shift, and go to state 45
+    BLANCO    shift, and go to state 46
+
+    DATO   go to state 49
+    COLOR  go to state 48
+
+
+State 29
+
+   23 MOV_REC: REC '(' • DATO ')'
+
+    ID        shift, and go to state 40
+    INT       shift, and go to state 41
+    ROJO      shift, and go to state 42
+    AZUL      shift, and go to state 43
+    AMARILLO  shift, and go to state 44
+    VERDE     shift, and go to state 45
+    BLANCO    shift, and go to state 46
+
+    DATO   go to state 50
+    COLOR  go to state 48
+
+
+State 30
+
+   24 MOV_LIN: LIN '(' • DATO ')'
+
+    ID        shift, and go to state 40
+    INT       shift, and go to state 41
+    ROJO      shift, and go to state 42
+    AZUL      shift, and go to state 43
+    AMARILLO  shift, and go to state 44
+    VERDE     shift, and go to state 45
+    BLANCO    shift, and go to state 46
+
+    DATO   go to state 51
+    COLOR  go to state 48
+
+
+State 31
+
+   25 MOV_UBE: UBE '(' • DATO ')'
+
+    ID        shift, and go to state 40
+    INT       shift, and go to state 41
+    ROJO      shift, and go to state 42
+    AZUL      shift, and go to state 43
+    AMARILLO  shift, and go to state 44
+    VERDE     shift, and go to state 45
+    BLANCO    shift, and go to state 46
+
+    DATO   go to state 52
+    COLOR  go to state 48
+
+
+State 32
+
+   26 MOV_UNT: UNT '(' • DATO ')'
+
+    ID        shift, and go to state 40
+    INT       shift, and go to state 41
+    ROJO      shift, and go to state 42
+    AZUL      shift, and go to state 43
+    AMARILLO  shift, and go to state 44
+    VERDE     shift, and go to state 45
+    BLANCO    shift, and go to state 46
+
+    DATO   go to state 53
+    COLOR  go to state 48
+
+
+State 33
+
+    0 $accept: PROG $end •
+
+    $default  accept
+
+
+State 34
+
+    7 ANFANG_FACTOR: EOF •
+
+    $default  reduce using rule 7 (ANFANG_FACTOR)
+
+
+State 35
+
+    1 PROG: ANFANG_PROD ANFANG_FACTOR •
+
+    $default  reduce using rule 1 (PROG)
+
+
+State 36
+
+    6 ANFANG_FACTOR: MULTI_INST • ENDE EOF
+    8              | MULTI_INST • EOF
+
+    ENDE  shift, and go to state 54
+    EOF   shift, and go to state 55
+
+
+State 37
+
+    2 PROG: MULTI_INST EOF •
+
+    $default  reduce using rule 2 (PROG)
+
+
+State 38
+
+    9 MULTI_INST: INST MULTI_INST •
+
+    $default  reduce using rule 9 (MULTI_INST)
+
+
+State 39
+
+   13 DECL: WERT ID ASSIGN • DATO
+
+    ID        shift, and go to state 40
+    INT       shift, and go to state 41
+    ROJO      shift, and go to state 42
+    AZUL      shift, and go to state 43
+    AMARILLO  shift, and go to state 44
+    VERDE     shift, and go to state 45
+    BLANCO    shift, and go to state 46
+
+    DATO   go to state 56
+    COLOR  go to state 48
+
+
+State 40
+
+   27 DATO: ID •
+
+    $default  reduce using rule 27 (DATO)
+
+
+State 41
+
+   28 DATO: INT •
+
+    $default  reduce using rule 28 (DATO)
+
+
+State 42
+
+   30 COLOR: ROJO •
+
+    $default  reduce using rule 30 (COLOR)
+
+
+State 43
+
+   31 COLOR: AZUL •
+
+    $default  reduce using rule 31 (COLOR)
+
+
+State 44
+
+   32 COLOR: AMARILLO •
+
+    $default  reduce using rule 32 (COLOR)
+
+
+State 45
+
+   33 COLOR: VERDE •
+
+    $default  reduce using rule 33 (COLOR)
+
+
+State 46
+
+   34 COLOR: BLANCO •
+
+    $default  reduce using rule 34 (COLOR)
+
+
+State 47
+
+   21 PROC_FARBE: FARBE '(' DATO • ')'
+
+    ')'  shift, and go to state 57
+
+
+State 48
+
+   29 DATO: COLOR •
+
+    $default  reduce using rule 29 (DATO)
+
+
+State 49
+
+   22 PROC_POS: POS '(' DATO • ',' DATO ')'
+
+    ','  shift, and go to state 58
+
+
+State 50
+
+   23 MOV_REC: REC '(' DATO • ')'
+
+    ')'  shift, and go to state 59
+
+
+State 51
+
+   24 MOV_LIN: LIN '(' DATO • ')'
+
+    ')'  shift, and go to state 60
+
+
+State 52
+
+   25 MOV_UBE: UBE '(' DATO • ')'
+
+    ')'  shift, and go to state 61
+
+
+State 53
+
+   26 MOV_UNT: UNT '(' DATO • ')'
+
+    ')'  shift, and go to state 62
+
+
+State 54
+
+    6 ANFANG_FACTOR: MULTI_INST ENDE • EOF
+
+    EOF  shift, and go to state 63
+
+
+State 55
+
+    8 ANFANG_FACTOR: MULTI_INST EOF •
+
+    $default  reduce using rule 8 (ANFANG_FACTOR)
+
+
+State 56
+
+   13 DECL: WERT ID ASSIGN DATO •
+
+    $default  reduce using rule 13 (DECL)
+
+
+State 57
+
+   21 PROC_FARBE: FARBE '(' DATO ')' •
+
+    $default  reduce using rule 21 (PROC_FARBE)
+
+
+State 58
+
+   22 PROC_POS: POS '(' DATO ',' • DATO ')'
+
+    ID        shift, and go to state 40
+    INT       shift, and go to state 41
+    ROJO      shift, and go to state 42
+    AZUL      shift, and go to state 43
+    AMARILLO  shift, and go to state 44
+    VERDE     shift, and go to state 45
+    BLANCO    shift, and go to state 46
+
+    DATO   go to state 64
+    COLOR  go to state 48
+
+
+State 59
+
+   23 MOV_REC: REC '(' DATO ')' •
+
+    $default  reduce using rule 23 (MOV_REC)
+
+
+State 60
+
+   24 MOV_LIN: LIN '(' DATO ')' •
+
+    $default  reduce using rule 24 (MOV_LIN)
+
+
+State 61
+
+   25 MOV_UBE: UBE '(' DATO ')' •
+
+    $default  reduce using rule 25 (MOV_UBE)
+
+
+State 62
+
+   26 MOV_UNT: UNT '(' DATO ')' •
+
+    $default  reduce using rule 26 (MOV_UNT)
+
+
+State 63
+
+    6 ANFANG_FACTOR: MULTI_INST ENDE EOF •
+
+    $default  reduce using rule 6 (ANFANG_FACTOR)
+
+
+State 64
+
+   22 PROC_POS: POS '(' DATO ',' DATO • ')'
+
+    ')'  shift, and go to state 65
+
+
+State 65
+
+   22 PROC_POS: POS '(' DATO ',' DATO ')' •
+
+    $default  reduce using rule 22 (PROC_POS)
