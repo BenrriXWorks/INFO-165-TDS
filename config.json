@@ -5,5 +5,6 @@
     "INPUT_FILE": "./input_examples/input.test",
     "FILE_ENCODING": "utf-8",
     "grammarPath": "parser/grammar.y",
-    "lexerPath": "parser/lexer.l"
+    "lexerPath": "parser/lexer.l",
+    "PORT":3000
 }
